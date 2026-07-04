@@ -205,6 +205,10 @@ export async function POST(request: Request) {
           ? `on ${classDay}`
           : "soon";
 
+  // Gi and Juniors train in a gi; flag it so the confirmation can nudge them to
+  // sort one out. (Women's is intentionally left out for now, no-gi never needs one.)
+  const needsGi = program === "gi" || program === "juniors";
+
   const attribution: Record<string, string> = {};
   for (const key of ATTRIBUTION_KEYS) {
     const value = body[key];
@@ -267,7 +271,11 @@ export async function POST(request: Request) {
       ``,
       `What to bring:`,
       `• Comfortable sportswear (no zips or buttons) and a bottle of water`,
-      `• That's everything you need for a first class`,
+      ...(needsGi
+        ? [
+            `• A gi (kimono) for this class — if you haven't got one yet, just reply and Mike will point you to a good starter one, or you can order through the shop (${site.url}/shop)`,
+          ]
+        : [`• That's everything you need for a first class`]),
       ``,
       `Turn up about 15 minutes early so the coach can meet you, show you around, and pair you with a friendly partner. No experience needed and no pressure — just come and try it.`,
       ``,
