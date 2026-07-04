@@ -190,10 +190,16 @@ export const pricing = {
       joinUrl: "https://otsu.io/2q8",
     },
     {
-      name: "Junior Jiu Jitsu",
+      name: "Junior (1×/week)",
       price: "£60/month",
       note: "1 class weekly + gradings",
       joinUrl: "https://otsu.io/2pu",
+    },
+    {
+      name: "Junior (2×/week)",
+      price: "£90/month",
+      note: "2 classes weekly + gradings",
+      joinUrl: "https://otsu.io/368",
     },
     {
       name: "Pay-per-class",
