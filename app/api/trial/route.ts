@@ -9,8 +9,12 @@ import { site } from "@/lib/site";
 
 const TO_EMAIL = process.env.LEAD_TO_EMAIL ?? "truevirtuesjiujitsu@gmail.com";
 const FROM_EMAIL = process.env.LEAD_FROM_EMAIL ?? "onboarding@resend.dev";
-// Resend Audience the booker is added to (fires the gym's follow-up automation).
-const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
+// The booker is added to this Resend Audience (fires the gym's follow-up
+// automation). If no explicit ID is set, we auto-find/create an audience by
+// name — so it works with zero config. Set the name Mike wants to trigger on.
+const AUDIENCE_NAME = process.env.RESEND_AUDIENCE_NAME ?? "New Leads";
+// Cached across warm invocations so we don't re-resolve on every booking.
+let cachedAudienceId = process.env.RESEND_AUDIENCE_ID ?? "";
 
 const ATTRIBUTION_KEYS = [
   "utm_source",
@@ -42,6 +46,40 @@ async function sendEmail(apiKey: string, payload: Record<string, unknown>): Prom
     console.error("Resend request failed:", err);
     return false;
   }
+}
+
+// Find the audience named AUDIENCE_NAME, creating it if it doesn't exist yet.
+// Returns its ID (empty string on failure). Result is cached per instance.
+async function resolveAudienceId(apiKey: string): Promise<string> {
+  if (cachedAudienceId) return cachedAudienceId;
+  const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+  try {
+    const listRes = await fetch("https://api.resend.com/audiences", { headers });
+    if (listRes.ok) {
+      const list = await listRes.json();
+      const found = (list?.data ?? []).find(
+        (a: { id: string; name: string }) => a.name === AUDIENCE_NAME
+      );
+      if (found?.id) {
+        cachedAudienceId = found.id;
+        return cachedAudienceId;
+      }
+    }
+    const createRes = await fetch("https://api.resend.com/audiences", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ name: AUDIENCE_NAME }),
+    });
+    if (createRes.ok) {
+      const created = await createRes.json();
+      cachedAudienceId = created?.id ?? "";
+      return cachedAudienceId;
+    }
+    console.error("Resend audience resolve failed:", createRes.status, await createRes.text());
+  } catch (err) {
+    console.error("Resend audience resolve error:", err);
+  }
+  return "";
 }
 
 const addressLine = `${site.address.venue}, ${site.address.street}, ${site.address.postcode}`;
@@ -190,14 +228,14 @@ export async function POST(request: Request) {
     ].join("\n"),
   });
 
-  // 3) Add the booker as a contact in the Resend Audience. Mike sets up a
-  //    Resend Automation that triggers on "contact added", so he manages the
-  //    follow-up sequence himself from the Resend dashboard. No-op if no
-  //    audience is configured.
-  if (AUDIENCE_ID) {
+  // 3) Add the booker as a contact in the "New Leads" Resend Audience (created
+  //    automatically if needed). Mike sets up a Resend Automation that triggers
+  //    on "contact added", so he manages the follow-up from the dashboard.
+  const audienceId = await resolveAudienceId(apiKey);
+  if (audienceId) {
     const [firstName, ...rest] = name.split(" ");
     try {
-      const res = await fetch(`https://api.resend.com/audiences/${AUDIENCE_ID}/contacts`, {
+      const res = await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
