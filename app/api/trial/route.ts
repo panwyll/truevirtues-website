@@ -176,10 +176,12 @@ export async function POST(request: Request) {
     ].join("\n"),
   });
 
-  // 2) Confirm to the customer, immediately.
+  // 2) Confirm to the customer, immediately — cc the gym so they see the
+  //    exact confirmation the customer received.
   await sendEmail(apiKey, {
     from: `True Virtues Jiu Jitsu <${FROM_EMAIL}>`,
     to: [email],
+    cc: [TO_EMAIL],
     reply_to: TO_EMAIL,
     subject: "You're booked in at True Virtues Jiu Jitsu 🥋",
     text: [
