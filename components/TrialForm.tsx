@@ -89,6 +89,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
           ...data,
           session: sessionLabel,
           sessionAt,
+          localTime: new Date().getTimezoneOffset(),
           ...tracking,
           form_page: typeof window !== "undefined" ? window.location.pathname : "",
         }),

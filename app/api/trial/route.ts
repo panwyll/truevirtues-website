@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { site } from "@/lib/site";
 
-// Serverless signup handler. With RESEND_API_KEY set it emails a lead alert to
-// the gym and an instant confirmation to the customer, then adds the customer
-// to a Resend Audience so a Resend Automation (managed by the gym) can handle
-// the follow-up. Without the key it logs the lead so the form still works.
+// Serverless signup handler. Every booking is forwarded to Martialytics as a
+// lead. With RESEND_API_KEY set it also emails a lead alert to the gym and an
+// instant confirmation to the customer, then adds the customer to a Resend
+// Audience so a Resend Automation (managed by the gym) handles the follow-up.
+// Without the Resend key it logs the lead so the form still works.
 
 const TO_EMAIL = process.env.LEAD_TO_EMAIL ?? "truevirtuesjiujitsu@gmail.com";
 const FROM_EMAIL = process.env.LEAD_FROM_EMAIL ?? "onboarding@resend.dev";
@@ -45,6 +46,43 @@ async function sendEmail(apiKey: string, payload: Record<string, unknown>): Prom
 
 const addressLine = `${site.address.venue}, ${site.address.street}, ${site.address.postcode}`;
 
+// Martialytics school ID for lead forwarding (public value from the leads
+// widget; overridable via env). Set to "" in env to disable forwarding.
+const MA_SCHOOL_ID =
+  process.env.MARTIALYTICS_SCHOOL_ID ?? "03f505c2-a968ab45-b050c125-60c6c2b8";
+
+// Forward the booking to Martialytics as a lead so it lands in the gym's
+// management system. Best-effort — never blocks the booking response.
+async function forwardToMartialytics(lead: {
+  name: string;
+  email: string;
+  phone: string;
+  interests: string;
+  localTime: string;
+}) {
+  if (!MA_SCHOOL_ID) return;
+  const params = new URLSearchParams({
+    ma_school_id: MA_SCHOOL_ID,
+    ma_fullname: lead.name,
+    ma_email: lead.email,
+    ma_phone: lead.phone,
+    ma_interests: lead.interests,
+    ma_referral: "Website",
+    ma_local_time: lead.localTime,
+    email: "", // honeypot must stay empty
+  });
+  try {
+    const res = await fetch("https://services.martialytics.com/widgets/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    });
+    if (!res.ok) console.error("Martialytics lead error:", res.status, await res.text());
+  } catch (err) {
+    console.error("Martialytics lead request failed:", err);
+  }
+}
+
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
   try {
@@ -63,6 +101,7 @@ export async function POST(request: Request) {
   const phone = String(body.phone ?? "").trim(); // optional
   const session = String(body.session ?? "Not sure yet").trim().slice(0, 200);
   const sessionAtRaw = String(body.sessionAt ?? "").trim();
+  const localTime = String(body.localTime ?? "0").trim().slice(0, 6);
 
   if (!name || !email) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -89,6 +128,9 @@ export async function POST(request: Request) {
     ...attribution,
     receivedAt: new Date().toISOString(),
   };
+
+  // Forward to Martialytics on every booking, regardless of email config.
+  await forwardToMartialytics({ name, email, phone, interests: session, localTime });
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
