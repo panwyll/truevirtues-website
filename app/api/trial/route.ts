@@ -195,6 +195,15 @@ export async function POST(request: Request) {
     if (classKey === key(new Date(now.getTime() + 24 * 60 * 60 * 1000))) return "tomorrow";
     return "later";
   })();
+  // Ready-to-drop-in phrase for the follow-up: "today" / "tomorrow" / "on Tuesday".
+  const whenPhrase =
+    classWhen === "today"
+      ? "today"
+      : classWhen === "tomorrow"
+        ? "tomorrow"
+        : classDay
+          ? `on ${classDay}`
+          : "soon";
 
   const attribution: Record<string, string> = {};
   for (const key of ATTRIBUTION_KEYS) {
@@ -377,6 +386,8 @@ export async function POST(request: Request) {
           program,
           day: classDay,
           class_when: classWhen,
+          // Ready-made phrase ("today"/"tomorrow"/"on Tuesday") for the copy.
+          when: whenPhrase,
           phone: phone || "",
         },
       }),
