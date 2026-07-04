@@ -273,7 +273,7 @@ export async function POST(request: Request) {
       `• Comfortable sportswear (no zips or buttons) and a bottle of water`,
       ...(needsGi
         ? [
-            `• A gi (kimono) for this class — if you haven't got one yet, just reply and Mike will point you to a good starter one, or you can order through the shop (${site.url}/shop)`,
+            `• A gi (kimono) for this class — if you haven't got one yet, just reply and Mike will point you to a good starter one`,
           ]
         : [`• That's everything you need for a first class`]),
       ``,
