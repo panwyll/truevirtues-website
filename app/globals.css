@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand: black / white / vermillion red, from the TVJJ logo and banners */
+  --color-ink: #0a0a0a;
+  --color-panel: #171412;
+  --color-accent: #e63a1f;
+  --color-accent-strong: #c22d14;
+  --color-gold: #f5b942;
+  --font-display: var(--font-oswald), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Matches the 4rem (64px) fixed header so anchored sections land flush
+     beneath it rather than leaving a gap. */
+  scroll-padding-top: 4rem;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-ink);
+  color: #fafaf9;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Continuously rolling reviews marquee. The track holds two copies of the
+   list, so translating it -50% loops seamlessly. */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+}
+.marquee-viewport:hover .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
