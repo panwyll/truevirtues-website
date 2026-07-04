@@ -70,10 +70,14 @@ made-up address like `hello@truevirtuesjiujitsu.com`; replies route to Gmail.
 | `LEAD_FROM_EMAIL` | `hello@truevirtuesjiujitsu.com` (virtual sender on the verified domain) |
 | `LEAD_TO_EMAIL` | `truevirtuesjiujitsu@gmail.com` (where he reads bookings) |
 | `COACH_NAME` | `Mike` |
-| `NEXT_PUBLIC_SITE_URL` | `https://www.truevirtuesjiujitsu.com` |
 
-Optional later: `NEXT_PUBLIC_GA_ID`, Stripe vars, Martialytics vars (all in
-`.env.example`). **Redeploy** after adding vars (Deployments → ⋯ → Redeploy).
+Optional / skip unless needed:
+- `NEXT_PUBLIC_SITE_URL` = `https://www.truevirtuesjiujitsu.com` — only a fallback
+  for Stripe return links; not needed for the site or emails.
+- `NEXT_PUBLIC_GA_ID`, Stripe vars, Martialytics vars — all in `.env.example`,
+  all dormant until set.
+
+**Redeploy** after adding vars (Deployments → ⋯ → Redeploy).
 
 ## Step 5 — Test BEFORE touching the domain
 
