@@ -174,6 +174,10 @@ export async function POST(request: Request) {
   // Only treat the class time as usable if it parses and is in the future.
   const parsed = sessionAtRaw ? new Date(sessionAtRaw) : null;
   const classAt = parsed && !isNaN(parsed.getTime()) && parsed.getTime() > Date.now() ? parsed : null;
+  // Weekday of the class (e.g. "Tuesday") so automations can branch by day.
+  const classDay = classAt
+    ? new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "long" }).format(classAt)
+    : "";
 
   const attribution: Record<string, string> = {};
   for (const key of ATTRIBUTION_KEYS) {
@@ -350,9 +354,10 @@ export async function POST(request: Request) {
           first_name: firstName || name,
           full_name: name,
           class: session,
-          // Program key (gi/nogi/womens/juniors) so automations can branch or
-          // audiences can be partitioned by which class they booked.
+          // Program key (gi/nogi/womens/juniors) and weekday, so automations
+          // can branch by plan type and/or day.
           program,
+          day: classDay,
           phone: phone || "",
         },
       }),
