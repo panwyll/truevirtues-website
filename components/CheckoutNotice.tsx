@@ -41,7 +41,7 @@ export default function CheckoutNotice() {
             within 24 hours to confirm your class time.
           </>
         ) : (
-          <>Checkout cancelled — no payment was taken. You can still book a trial class below.</>
+          <>Checkout cancelled — no payment was taken. You can still book a free trial below.</>
         )}
         <button
           type="button"

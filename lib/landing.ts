@@ -30,7 +30,7 @@ export const landings: Landing[] = [
       title:
         "Women's Brazilian Jiu Jitsu in Wimbledon | Ladies-Only BJJ & Self-Defence",
       description:
-        "Women-only BJJ and self-defence classes in Wimbledon every Thursday. Beginner-friendly, black belt coaching, a respectful environment — book a trial class. YMCA Wimbledon SW19.",
+        "Women-only BJJ and self-defence classes in Wimbledon every Thursday. Beginner-friendly, black belt coaching, a respectful environment — first class free. YMCA Wimbledon SW19.",
       keywords: [
         "women's BJJ Wimbledon",
         "women's self defence Wimbledon",
@@ -41,7 +41,7 @@ export const landings: Landing[] = [
     hero: {
       eyebrow: "Women's Jiu Jitsu · Wimbledon SW19",
       titleLead: "Women's Jiu Jitsu & self-defence in Wimbledon —",
-      titleAccent: "book a trial class",
+      titleAccent: "first class free",
       sub: "A women-only class every Thursday. Practical self-defence and BJJ fundamentals, coached to your pace in a focused, respectful environment. No experience needed.",
       image: {
         src: "/womens-class.jpg",
@@ -82,14 +82,14 @@ export const landings: Landing[] = [
         "Every Thursday, 18:00 – 19:00",
         "YMCA Wimbledon, 198 The Broadway, SW19 1RY",
         "Women only · all levels · ages 16+",
-        "Trial class available · loan gi provided",
+        "First class free · loan gi available",
         "Changing rooms, lockers and showers on site",
       ],
     },
     faqs: [
       {
         q: "Do I need to book my first women's class?",
-        a: "Yes — fill in the form and we'll confirm your trial class within 24 hours so we know to expect you and can have a loan gi ready.",
+        a: "Yes — fill in the form and we'll confirm your free class within 24 hours so we know to expect you and can have a loan gi ready.",
       },
       {
         q: "Can I also train in the mixed classes?",
@@ -108,7 +108,7 @@ export const landings: Landing[] = [
       title:
         "No-Gi Jiu Jitsu & Submission Grappling in Wimbledon | True Virtues",
       description:
-        "No-Gi BJJ and submission grappling in Wimbledon every Thursday, 19:00–21:00. Wrestling and MMA crossover, beginners paired with experienced partners — book a trial class. YMCA Wimbledon SW19.",
+        "No-Gi BJJ and submission grappling in Wimbledon every Thursday, 19:00–21:00. Wrestling and MMA crossover, beginners paired with experienced partners — first class free. YMCA Wimbledon SW19.",
       keywords: [
         "no gi jiu jitsu Wimbledon",
         "submission grappling London",
@@ -119,7 +119,7 @@ export const landings: Landing[] = [
     hero: {
       eyebrow: "Fundamentals (No-Gi) · Thursdays",
       titleLead: "No-Gi grappling in Wimbledon —",
-      titleAccent: "book a trial class",
+      titleAccent: "first class free",
       sub: "Faster-paced submission grappling in shorts and a rash guard, with huge crossover to wrestling and MMA. Beginners are paired with experienced partners and given time to find their feet.",
       image: {
         src: "/seminar-ffion-davies.webp",
@@ -160,7 +160,7 @@ export const landings: Landing[] = [
         "Every Thursday, 19:00 – 21:00",
         "YMCA Wimbledon, 198 The Broadway, SW19 1RY",
         "Adults 16+ · all levels welcome",
-        "Trial class available · no gi needed",
+        "First class free · no gi or uniform needed",
         "Changing rooms, lockers and showers on site",
       ],
     },
@@ -186,7 +186,7 @@ export const landings: Landing[] = [
       title:
         "Kids' Brazilian Jiu Jitsu in Wimbledon (Ages 8–15) | Junior BJJ",
       description:
-        "Kids' BJJ classes in Wimbledon for ages 8–15, Tuesdays and Saturdays. Build confidence, discipline and anti-bullying skills in small, structured classes — book a trial class. YMCA Wimbledon SW19.",
+        "Kids' BJJ classes in Wimbledon for ages 8–15, Tuesdays and Saturdays. Build confidence, discipline and anti-bullying skills in small, structured classes — first class free. YMCA Wimbledon SW19.",
       keywords: [
         "kids BJJ Wimbledon",
         "children's martial arts Wimbledon",
@@ -197,7 +197,7 @@ export const landings: Landing[] = [
     hero: {
       eyebrow: "Junior Jiu Jitsu · Ages 8–15",
       titleLead: "Brazilian Jiu Jitsu for kids in Wimbledon —",
-      titleAccent: "book a trial class",
+      titleAccent: "first class free",
       sub: "Small, structured classes built around technique and the Seven Virtues: discipline, respect and confidence that carries over to school and home. Twice a week, Tuesdays and Saturdays.",
       image: {
         src: "/juniors-class.jpg",
@@ -238,7 +238,7 @@ export const landings: Landing[] = [
         "Tuesdays 17:45 – 18:45 and Saturdays 11:00 – 12:00",
         "YMCA Wimbledon, 198 The Broadway, SW19 1RY",
         "Ages 8–15 · all levels · small class sizes",
-        "Trial class available · loan gi provided",
+        "First class free · loan gi available",
         "Structured grading path and the Seven Virtues",
       ],
     },
@@ -253,7 +253,7 @@ export const landings: Landing[] = [
       },
       {
         q: "Can I watch my child's class?",
-        a: "Yes, parents are welcome to watch. Come along to the trial class and see how they get on.",
+        a: "Yes, parents are welcome to watch. Come along to the free first class and see how they get on.",
       },
     ],
   },
@@ -263,7 +263,7 @@ export const landings: Landing[] = [
     meta: {
       title: "Gi Brazilian Jiu Jitsu Classes in Wimbledon | Fundamentals BJJ",
       description:
-        "Traditional Gi Brazilian Jiu Jitsu in Wimbledon for all levels. Beginner-friendly fundamentals with black belt coaching at YMCA Wimbledon, SW19. Book a trial class.",
+        "Traditional Gi Brazilian Jiu Jitsu in Wimbledon for all levels. Beginner-friendly fundamentals with black belt coaching at YMCA Wimbledon, SW19. Book a free trial class.",
       keywords: [
         "gi BJJ Wimbledon",
         "brazilian jiu jitsu classes Wimbledon",
@@ -274,7 +274,7 @@ export const landings: Landing[] = [
     hero: {
       eyebrow: "Fundamentals (Gi) · Tuesdays & Saturdays",
       titleLead: "Traditional Gi Jiu Jitsu in Wimbledon —",
-      titleAccent: "book a trial class",
+      titleAccent: "first class free",
       sub: "The classic art in the gi: grips, leverage and technical precision. Mixed-ability classes where beginners are paired with experienced partners, so you're never thrown in at the deep end.",
       image: {
         src: "/seminar-ffion-davies.webp",
@@ -316,13 +316,13 @@ export const landings: Landing[] = [
         "Free members' Open Mat after Saturday class (13:45 – 14:15)",
         "YMCA Wimbledon, 198 The Broadway, SW19 1RY",
         "Adults 16+ · all levels welcome",
-        "Trial class available · loan gi provided",
+        "First class free · loan gi available",
       ],
     },
     faqs: [
       {
         q: "What should I wear if I don't have a gi yet?",
-        a: "Comfortable athletic clothing with no zips or buttons — a t-shirt and shorts or leggings. We can lend you a gi for your trial class.",
+        a: "Comfortable athletic clothing with no zips or buttons — a t-shirt and shorts or leggings. We can lend you a gi for your free trial class.",
       },
       {
         q: "Where can I buy a gi?",

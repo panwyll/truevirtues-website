@@ -96,7 +96,7 @@ export default function MobileMenu({ links }: { links: NavLink[] }) {
               data-analytics="mobile-nav-book-trial"
               className="mt-4 block rounded-lg bg-accent py-3.5 text-center text-base font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
             >
-              Book Your Trial Class
+              Book Your Free Trial
             </a>
           </nav>
         </>

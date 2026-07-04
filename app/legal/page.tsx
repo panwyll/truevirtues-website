@@ -22,7 +22,7 @@ export default function Page() {
           <div>
             <h2 className="text-2xl font-bold text-white">Your privacy</h2>
             <p className="mt-3 leading-relaxed">
-              When you book a trial through this website we collect your name, phone number and email
+              When you book a free trial through this website we collect your name, phone number and email
               address, and the class you&apos;re interested in. We use these details only to contact
               you to arrange your class. We do not sell or share your information, and we do not store
               any card or payment details on this website — payments, where taken, are handled by our

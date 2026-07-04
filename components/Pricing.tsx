@@ -1,6 +1,10 @@
 import { pricing } from "@/lib/site";
 import PaidTrialButton from "./PaidTrialButton";
 
+// Martialytics sign-up page (One Touch Sign Up). When set, each membership
+// tier shows a "Join now" button so people can join directly.
+const SIGNUP_URL = process.env.NEXT_PUBLIC_MARTIALYTICS_SIGNUP_URL;
+
 export default function Pricing() {
   return (
     <section id="pricing" className="border-t border-white/5 bg-panel/40 py-12 sm:py-18">
@@ -10,7 +14,7 @@ export default function Pricing() {
         </h2>
         <p className="mt-4 max-w-2xl text-stone-300">
           Every membership is rolling monthly with a free month&apos;s freeze included. But start
-          with a trial class — the best way to know if it&apos;s for you.
+          with the free trial — you don&apos;t pay a penny until you know you love it.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-4">
@@ -34,7 +38,7 @@ export default function Pricing() {
               data-analytics="pricing-trial-book"
               className="mt-6 rounded-lg bg-accent py-3 text-center font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
             >
-              Book trial class
+              Book free trial
             </a>
             <PaidTrialButton />
           </div>
@@ -65,13 +69,34 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#free-trial"
-                data-analytics={`pricing-${tier.name.toLowerCase()}-start`}
-                className="mt-6 rounded-lg border border-white/20 py-3 text-center font-semibold text-white transition hover:border-accent hover:text-accent"
-              >
-                Start with a trial class
-              </a>
+              {SIGNUP_URL ? (
+                <div className="mt-6 flex flex-col gap-2">
+                  <a
+                    href={SIGNUP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-analytics={`pricing-${tier.name.toLowerCase()}-join`}
+                    className="rounded-lg bg-accent py-3 text-center font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
+                  >
+                    Join now
+                  </a>
+                  <a
+                    href="#free-trial"
+                    data-analytics={`pricing-${tier.name.toLowerCase()}-start`}
+                    className="text-center text-sm font-semibold text-stone-300 underline underline-offset-4 transition hover:text-white"
+                  >
+                    or try a free class first
+                  </a>
+                </div>
+              ) : (
+                <a
+                  href="#free-trial"
+                  data-analytics={`pricing-${tier.name.toLowerCase()}-start`}
+                  className="mt-6 rounded-lg border border-white/20 py-3 text-center font-semibold text-white transition hover:border-accent hover:text-accent"
+                >
+                  Start with a free class
+                </a>
+              )}
             </div>
           ))}
         </div>

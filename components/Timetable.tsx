@@ -46,7 +46,7 @@ export default function Timetable() {
                             data-analytics={`timetable-${c.dayName}-${c.programId}`}
                             className="text-xs font-bold uppercase tracking-wide text-accent hover:text-accent-strong"
                           >
-                            Book →
+                            Try free →
                           </a>
                         )}
                       </div>

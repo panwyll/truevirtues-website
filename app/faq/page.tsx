@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <PageShell
       title="Questions? Answered."
-      intro="Everything people usually want to know before their first class. Still unsure? Book a trial and see for yourself."
+      intro="Everything people usually want to know before their first class. Still unsure? Book a free trial and see for yourself."
     >
       <FAQ />
     </PageShell>

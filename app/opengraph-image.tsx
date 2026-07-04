@@ -41,7 +41,7 @@ export default function Image() {
             borderRadius: 12,
           }}
         >
-          Book Your Trial Class
+          Book Your Free Trial Class
         </div>
       </div>
     ),

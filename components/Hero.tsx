@@ -11,7 +11,7 @@ const slides = [
       <>
         Beginner-friendly BJJ,
         <br />
-        <span className="text-accent">book your first class</span>
+        <span className="text-accent">first class free</span>
       </>
     ),
     body: "Get fit, get confident and learn real self-defence with black belt coaching at YMCA Wimbledon. No experience needed.",
@@ -30,7 +30,7 @@ const slides = [
         <span className="text-accent">every week</span>
       </>
     ),
-    body: "Practical self-defence and BJJ fundamentals in a focused, respectful environment. Partners of similar size and experience. Book your first class online.",
+    body: "Practical self-defence and BJJ fundamentals in a focused, respectful environment. Partners of similar size and experience. Your first class is free.",
     image: {
       src: "/womens-class.jpg",
       alt: "Group of women training at True Virtues Jiu Jitsu Wimbledon",
@@ -62,7 +62,7 @@ const slides = [
         <span className="text-accent">for your kids</span>
       </>
     ),
-    body: "Small, structured classes built around technique and the Seven Virtues — twice a week, Tuesdays and Saturdays. Book their first class online.",
+    body: "Small, structured classes built around technique and the Seven Virtues — twice a week, Tuesdays and Saturdays. The first junior class is free.",
     image: {
       src: "/juniors-class.jpg",
       alt: "Junior class training at True Virtues Jiu Jitsu Wimbledon",
@@ -162,7 +162,7 @@ export default function Hero() {
             data-analytics="hero-book-trial"
             className="rounded-lg bg-accent px-8 py-4 text-center text-lg font-bold uppercase tracking-wide text-white shadow-xl shadow-accent/30 transition hover:bg-accent-strong"
           >
-            Book Your Trial Class
+            Book Your Free Trial Class
           </a>
           <a
             href="#timetable"

@@ -26,7 +26,7 @@ export default function TrialSection({
             <h2 className="text-3xl font-bold sm:text-5xl">
               {heading ?? (
                 <>
-                  Book your <span className="text-accent">trial class</span>
+                  Book your <span className="text-accent">free trial class</span>
                 </>
               )}
             </h2>

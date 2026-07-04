@@ -55,7 +55,7 @@ export default function Footer() {
             data-analytics="footer-book-trial"
             className="mt-5 inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
           >
-            Book Your Trial Class
+            Book Your Free Trial
           </a>
         </div>
       </div>

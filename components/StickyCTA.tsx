@@ -8,7 +8,7 @@ export default function StickyCTA() {
         data-analytics="sticky-book-trial"
         className="block w-full rounded-lg bg-accent py-3.5 text-center text-base font-bold uppercase tracking-wide text-white"
       >
-        Book Your Trial Class →
+        Book Your Free Trial Class →
       </a>
     </div>
   );

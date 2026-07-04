@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default:
-      "Brazilian Jiu Jitsu in Wimbledon | True Virtues Jiu Jitsu — Book a Trial Class",
+      "Brazilian Jiu Jitsu in Wimbledon | True Virtues Jiu Jitsu — Free Trial Class",
     template: "%s | True Virtues Jiu Jitsu Wimbledon",
   },
   description:
-    "BJJ classes in Wimbledon for complete beginners, women and kids. Black belt coaching at YMCA Wimbledon, SW19. No experience or fitness needed, no contracts. Book your trial class today.",
+    "BJJ classes in Wimbledon for complete beginners, women and kids. Black belt coaching at YMCA Wimbledon, SW19. No experience or fitness needed, no contracts. Book your free trial class today.",
   keywords: [
     "BJJ Wimbledon",
     "Brazilian Jiu Jitsu Wimbledon",
@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: site.url,
     siteName: site.name,
-    title: "Brazilian Jiu Jitsu in Wimbledon — Book a Trial Class",
+    title: "Brazilian Jiu Jitsu in Wimbledon — Free Trial Class",
     description:
-      "Beginner-friendly BJJ at YMCA Wimbledon. Black belt coaching, women's and junior classes, no contracts. Book your trial class.",
+      "Beginner-friendly BJJ at YMCA Wimbledon. Black belt coaching, women's and junior classes, no contracts. Book your free trial.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Brazilian Jiu Jitsu in Wimbledon — Book a Trial Class",
+    title: "Brazilian Jiu Jitsu in Wimbledon — Free Trial Class",
     description:
       "Beginner-friendly BJJ at YMCA Wimbledon. Black belt coaching, women's and junior classes, no contracts.",
   },

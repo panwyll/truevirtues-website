@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <PageShell
       title="Contact & Find Us"
-      intro="Questions before you start, or want to arrange your trial by phone? We're happy to help."
+      intro="Questions before you start, or want to arrange your free trial by phone? We're happy to help."
     >
       <section className="py-12 sm:py-18">
         <div className="mx-auto grid max-w-5xl gap-10 px-4 sm:grid-cols-2 sm:px-6">

@@ -43,7 +43,7 @@ export default function FAQ({ items }: { items?: readonly FaqItem[] }) {
             data-analytics="faq-book-trial"
             className="font-semibold text-accent underline underline-offset-4"
           >
-            Book a trial class
+            Book a free class
           </a>{" "}
           — it&apos;s the fastest way to find out.
         </p>

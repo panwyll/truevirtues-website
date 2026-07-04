@@ -73,7 +73,7 @@ export const programs = [
     audience: "Women only · Thursday evenings",
     description:
       "A women-only class covering practical self-defence and BJJ fundamentals in a focused, respectful environment. Coached to your pace, with training partners of similar size and experience.",
-    highlight: "Trial available",
+    highlight: "First class free",
     image: {
       src: "/womens-class.jpg",
       alt: "Group photo of women training at True Virtues Jiu Jitsu Wimbledon",
@@ -86,7 +86,7 @@ export const programs = [
     audience: "Ages 8–15 · Tuesdays & Saturdays",
     description:
       "Small, structured classes built around technical development and the Seven Virtues: discipline, respect and confidence that carries over to school and home.",
-    highlight: "Trial available",
+    highlight: "First class free",
     image: {
       src: "/juniors-class.jpg",
       alt: "Coach Mike Buckman-Cowling training with a student from the Junior class",
@@ -137,8 +137,8 @@ export const reviews = [
 
 export const pricing = {
   trial: {
-    name: "Trial Class",
-    price: "",
+    name: "Free Trial Class",
+    price: "£0",
     features: [
       "Try any beginner-friendly class",
       "Loan gi available — just bring sportswear",
@@ -197,7 +197,7 @@ export const faqs = [
   },
   {
     q: "Do you do a women's class?",
-    a: "Yes. We run a dedicated women-only class every Thursday from 18:00 to 19:00, covering practical self-defence and BJJ fundamentals in a focused, respectful environment. You can book your first women's class as a trial, and many members also train in the mixed adult classes when they're ready.",
+    a: "Yes. We run a dedicated women-only class every Thursday from 18:00 to 19:00, covering practical self-defence and BJJ fundamentals in a focused, respectful environment. Your first women's class is free, and many members also train in the mixed adult classes when they're ready.",
   },
   {
     q: "Do you compete?",
@@ -221,10 +221,10 @@ export const faqs = [
   },
   {
     q: "Are there contracts or joining fees?",
-    a: "No contracts, ever. All memberships are rolling monthly and include a free month's freeze if life gets in the way. And you can book a trial class first, with no obligation to join.",
+    a: "No contracts, ever. All memberships are rolling monthly and include a free month's freeze if life gets in the way. And your first class is free, with no obligation to join.",
   },
   {
     q: "Do you teach kids?",
-    a: "Yes — our Junior programme (ages 8–15) runs twice a week: Tuesdays 17:45–18:45 and Saturdays 11:00–12:00. Small, structured classes built around technique and the Seven Virtues. You can book their first class as a trial.",
+    a: "Yes — our Junior programme (ages 8–15) runs twice a week: Tuesdays 17:45–18:45 and Saturdays 11:00–12:00. Small, structured classes built around technique and the Seven Virtues. The first junior class is free.",
   },
 ] as const;

@@ -24,7 +24,7 @@ export default function LandingPage({ data }: { data: Landing }) {
               data-analytics="landing-hero-book-trial"
               className="rounded-lg bg-accent px-8 py-4 text-center text-lg font-bold uppercase tracking-wide text-white shadow-xl shadow-accent/30 transition hover:bg-accent-strong"
             >
-              Book Your Trial Class
+              Book Your Free Trial Class
             </a>
             <a
               href={site.phoneHref}
@@ -65,7 +65,7 @@ export default function LandingPage({ data }: { data: Landing }) {
                 href="#free-trial"
                 className="inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
               >
-                Book your trial class
+                Book your free class
               </a>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function LandingPage({ data }: { data: Landing }) {
           preselectProgram={data.programId}
           heading={
             <>
-              Book your <span className="text-accent">trial class</span>
+              Book your <span className="text-accent">free trial class</span>
             </>
           }
         />

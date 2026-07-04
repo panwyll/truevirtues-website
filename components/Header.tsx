@@ -41,7 +41,7 @@ export default function Header({ minimal = false }: { minimal?: boolean }) {
             data-analytics="header-book-trial"
             className="rounded-lg bg-accent px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-accent/25 transition hover:bg-accent-strong sm:px-5 sm:text-base"
           >
-            Book Your Trial Class
+            Book Your Free Trial
           </a>
           {!minimal && <MobileMenu links={navLinks} />}
         </div>

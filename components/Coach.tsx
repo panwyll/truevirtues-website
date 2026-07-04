@@ -43,7 +43,7 @@ export default function Coach() {
               data-analytics="coach-book-trial"
               className="mt-8 inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
             >
-              Train with us — book a trial class
+              Train with us — first class free
             </a>
           </div>
           <figure>

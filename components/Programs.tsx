@@ -7,7 +7,7 @@ export default function Programs() {
     <section id="programs" className="py-12 sm:py-18">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <h2 className="text-3xl font-bold sm:text-4xl">
-          Four programmes. <span className="text-accent">Book a trial in any.</span>
+          Four programmes. <span className="text-accent">One free first class.</span>
         </h2>
         <p className="mt-4 max-w-2xl text-stone-300">
           Whether you want fitness, self-defence, competition or something great for your kids,
@@ -47,7 +47,7 @@ export default function Programs() {
                     data-analytics={`program-${p.id}-book-trial`}
                     className="inline-block text-sm font-bold uppercase tracking-wide text-accent transition hover:text-accent-strong"
                   >
-                    Book a trial →
+                    Book a free trial →
                   </a>
                   {p.href && (
                     <Link

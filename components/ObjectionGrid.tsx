@@ -12,7 +12,7 @@ const objections = [
   {
     title: "“Is there a class for women?”",
     answer:
-      "Yes — a dedicated women-only class every Thursday evening, focused on practical self-defence in a respectful environment. You can book your first one as a trial.",
+      "Yes — a dedicated women-only class every Thursday evening, focused on practical self-defence in a respectful environment. Your first one is free.",
   },
   {
     title: "“Am I too old for this?”",
@@ -22,7 +22,7 @@ const objections = [
   {
     title: "“What about my kids?”",
     answer:
-      "Our Junior programme (ages 8–15) runs Tuesday evenings: small classes teaching technique, discipline and the Seven Virtues. Book their first class online.",
+      "Our Junior programme (ages 8–15) runs Tuesday evenings: small classes teaching technique, discipline and the Seven Virtues. First class free.",
   },
   {
     title: "“I'm nervous about walking in”",
@@ -61,7 +61,7 @@ export default function ObjectionGrid() {
             data-analytics="objections-book-trial"
             className="inline-block rounded-lg bg-accent px-8 py-4 text-lg font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
           >
-            Try a class and see for yourself
+            Try a free class and see for yourself
           </a>
         </div>
       </div>

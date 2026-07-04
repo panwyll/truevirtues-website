@@ -110,7 +110,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
           You&apos;re booked in! 🥋
         </p>
         <p className="mt-3 text-stone-200">
-          We&apos;ll text or email you within 24 hours to confirm your trial class and answer any
+          We&apos;ll text or email you within 24 hours to confirm your free trial class and answer any
           questions. Just bring sportswear and water — we&apos;ll sort the rest.
         </p>
         <p className="mt-4 text-sm text-stone-400">
@@ -175,7 +175,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
       </label>
       <label className="block">
         <span className="mb-1.5 block text-sm font-medium text-stone-300">
-          Pick your trial class *
+          Pick your free class *
         </span>
         <select
           required
@@ -201,7 +201,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
         disabled={status === "submitting"}
         className="w-full rounded-lg bg-accent py-4 text-lg font-bold uppercase tracking-wide text-white shadow-xl shadow-accent/30 transition hover:bg-accent-strong disabled:opacity-60"
       >
-        {status === "submitting" ? "Booking…" : "Book My Trial Class"}
+        {status === "submitting" ? "Booking…" : "Claim My Free Trial Class"}
       </button>
       {status === "error" && (
         <p className="text-sm text-red-400">
@@ -214,7 +214,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
       )}
       <p className="text-center text-xs text-stone-500">
         No obligation, no payment details needed. We&apos;ll only use your details to arrange your
-        trial class.
+        free trial class.
       </p>
     </form>
   );
