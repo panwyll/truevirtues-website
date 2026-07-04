@@ -258,7 +258,7 @@ export async function POST(request: Request) {
       ``,
       `What to bring:`,
       `• Comfortable sportswear (no zips or buttons) and a bottle of water`,
-      `• That's it — we'll lend you a gi if you need one`,
+      `• That's everything you need for a first class`,
       ``,
       `Turn up about 15 minutes early so the coach can meet you, show you around, and pair you with a friendly partner. No experience needed and no pressure — just come and try it.`,
       ``,
@@ -279,7 +279,7 @@ export async function POST(request: Request) {
   //     scheduled when the send time is still in the future.
   if (classAt) {
     const now = Date.now();
-    const bring = `Bring comfortable sportswear (no zips or buttons) and water — we'll lend you a gi. Arrive about 15 minutes early.`;
+    const bring = `Bring comfortable sportswear (no zips or buttons) and water. Arrive about 15 minutes early.`;
 
     const reminder24h = new Date(classAt.getTime() - 24 * 60 * 60 * 1000);
     if (reminder24h.getTime() > now) {
