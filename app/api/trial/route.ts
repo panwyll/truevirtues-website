@@ -228,12 +228,12 @@ export async function POST(request: Request) {
     ].join("\n"),
   });
 
+  const [firstName, ...rest] = name.split(" ");
+
   // 3) Add the booker as a contact in the "New Leads" Resend Audience (created
-  //    automatically if needed). Mike sets up a Resend Automation that triggers
-  //    on "contact added", so he manages the follow-up from the dashboard.
+  //    automatically if needed) — a persistent list for broadcasts.
   const audienceId = await resolveAudienceId(apiKey);
   if (audienceId) {
-    const [firstName, ...rest] = name.split(" ");
     try {
       const res = await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
         method: "POST",
@@ -249,6 +249,30 @@ export async function POST(request: Request) {
     } catch (err) {
       console.error("Resend contact request failed:", err);
     }
+  }
+
+  // 4) Fire a "trial.booked" event — this is what actually triggers the gym's
+  //    Resend Automation (Automations fire on custom events, not on a contact
+  //    being added). The payload variables are available in the automation's
+  //    email templates.
+  try {
+    const res = await fetch("https://api.resend.com/events/send", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "trial.booked",
+        email,
+        payload: {
+          first_name: firstName || name,
+          full_name: name,
+          class: session,
+          phone: phone || "",
+        },
+      }),
+    });
+    if (!res.ok) console.error("Resend event error:", res.status, await res.text());
+  } catch (err) {
+    console.error("Resend event request failed:", err);
   }
 
   if (!gymOk) {
