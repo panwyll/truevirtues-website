@@ -93,11 +93,21 @@ Only proceed once email works.
 1. **Vercel → Project → Settings → Domains → Add** `truevirtuesjiujitsu.com`.
    Vercel shows the exact records it wants (typically an **A record** `@` →
    `76.76.21.21` and a **CNAME** `www` → `cname.vercel-dns.com`).
-2. **In IONOS DNS, in one pass, add/update:**
-   - **Vercel:** the A record (`@`) and the `www` CNAME to Vercel's values above.
-   - **Resend:** the SPF, DKIM, and `send.` MX records from Step 3.
-   - **Leave the MX records for the root domain alone** (they route email).
-   - **Do NOT change nameservers** — only edit individual records.
+2. **In IONOS DNS, in one pass. Replace vs add matters:**
+   - **REPLACE (don't duplicate) the website records** — a name can only point one
+     place: **edit the existing `@` A record** to Vercel's IP, and **replace `www`**
+     with the CNAME to `cname.vercel-dns.com`. Never leave the old values alongside
+     the new — two `@` A records would split traffic randomly.
+     - *IONOS gotcha:* the `@` record may be locked because the domain is
+       "connected" to the IONOS website builder. If you can't edit it, first
+       **detach/unpublish the IONOS site** or set the domain to **"use with a
+       different provider" / external DNS** in the domain settings — then the
+       A/CNAME become editable.
+   - **ADD (new) the Resend records** — SPF, DKIM, and the `send.` MX. They're on
+     different names, so they don't conflict; just add them. (Only if a *root* SPF
+     `v=spf1` already exists, merge into it rather than adding a second.)
+   - **Leave the root MX records alone** (they route email) and **do NOT change
+     nameservers** — only edit individual records.
 3. Back in Vercel, set **www as the primary domain** so the apex redirects to
    `www.truevirtuesjiujitsu.com` (matches the site's canonical URLs).
 4. Wait for propagation (≈5 min if you lowered TTL, otherwise up to a few hours).
