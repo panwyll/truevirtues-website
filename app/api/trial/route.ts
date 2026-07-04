@@ -178,6 +178,23 @@ export async function POST(request: Request) {
   const classDay = classAt
     ? new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "long" }).format(classAt)
     : "";
+  // How soon the class is, in London calendar terms: today | tomorrow | later
+  // (empty if no class picked). Lets automations handle short-notice bookings.
+  const classWhen = (() => {
+    if (!classAt) return "";
+    const key = (d: Date) =>
+      new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Europe/London",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(d);
+    const now = new Date();
+    const classKey = key(classAt);
+    if (classKey === key(now)) return "today";
+    if (classKey === key(new Date(now.getTime() + 24 * 60 * 60 * 1000))) return "tomorrow";
+    return "later";
+  })();
 
   const attribution: Record<string, string> = {};
   for (const key of ATTRIBUTION_KEYS) {
@@ -354,10 +371,12 @@ export async function POST(request: Request) {
           first_name: firstName || name,
           full_name: name,
           class: session,
-          // Program key (gi/nogi/womens/juniors) and weekday, so automations
-          // can branch by plan type and/or day.
+          // Program key (gi/nogi/womens/juniors), weekday, and how soon the
+          // class is (today/tomorrow/later) — so automations can branch by
+          // plan type, day, and short-notice vs. later bookings.
           program,
           day: classDay,
+          class_when: classWhen,
           phone: phone || "",
         },
       }),
