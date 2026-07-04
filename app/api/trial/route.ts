@@ -84,6 +84,28 @@ async function resolveAudienceId(apiKey: string): Promise<string> {
 
 const addressLine = `${site.address.venue}, ${site.address.street}, ${site.address.postcode}`;
 
+// UTC instant for `hour:minute` Europe/London on the London date of `ref`
+// (DST-aware). Used to schedule the "morning of" reminder at ~7:30am UK.
+function londonAt(ref: Date, hour: number, minute: number): Date {
+  const fmt = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const parts = (d: Date) =>
+    fmt.formatToParts(d).reduce<Record<string, string>>((a, p) => ((a[p.type] = p.value), a), {});
+  const p = parts(ref);
+  const guess = Date.UTC(+p.year, +p.month - 1, +p.day, hour, minute, 0);
+  const g = parts(new Date(guess));
+  const offset = Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour, +g.minute, +g.second) - guess;
+  return new Date(guess - offset);
+}
+
 // Martialytics school ID for lead forwarding (public value from the leads
 // widget; overridable via env). Set to "" in env to disable forwarding.
 const MA_SCHOOL_ID =
@@ -140,6 +162,7 @@ export async function POST(request: Request) {
   const session = String(body.session ?? "Not sure yet").trim().slice(0, 200);
   const sessionAtRaw = String(body.sessionAt ?? "").trim();
   const localTime = String(body.localTime ?? "0").trim().slice(0, 6);
+  const program = String(body.program ?? "").trim().slice(0, 40);
 
   if (!name || !email) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -230,6 +253,67 @@ export async function POST(request: Request) {
 
   const [firstName, ...rest] = name.split(" ");
 
+  // 2b) Class reminders to cut no-shows — scheduled at booking time (Resend
+  //     allows up to 30 days out, covering the whole booking window). Only
+  //     scheduled when the send time is still in the future.
+  if (classAt) {
+    const now = Date.now();
+    const bring = `Bring comfortable sportswear (no zips or buttons) and water — we'll lend you a gi. Arrive about 15 minutes early.`;
+
+    const reminder24h = new Date(classAt.getTime() - 24 * 60 * 60 * 1000);
+    if (reminder24h.getTime() > now) {
+      await sendEmail(apiKey, {
+        from: `True Virtues Jiu Jitsu <${FROM_EMAIL}>`,
+        to: [email],
+        reply_to: TO_EMAIL,
+        scheduled_at: reminder24h.toISOString(),
+        subject: "Your trial class is tomorrow 🥋",
+        text: [
+          `Hi ${firstName || name},`,
+          ``,
+          `Quick reminder — your trial class at True Virtues is tomorrow:`,
+          session,
+          ``,
+          bring,
+          ``,
+          `Where: ${addressLine}`,
+          `Directions: ${site.address.mapsUrl}`,
+          ``,
+          `Can't make it? Just reply or call ${site.phone} and we'll rebook you.`,
+          ``,
+          `See you tomorrow,`,
+          `True Virtues Jiu Jitsu`,
+        ].join("\n"),
+      });
+    }
+
+    const morningOf = londonAt(classAt, 7, 30);
+    if (morningOf.getTime() > now && morningOf.getTime() < classAt.getTime()) {
+      await sendEmail(apiKey, {
+        from: `True Virtues Jiu Jitsu <${FROM_EMAIL}>`,
+        to: [email],
+        reply_to: TO_EMAIL,
+        scheduled_at: morningOf.toISOString(),
+        subject: "See you today at True Virtues 🥋",
+        text: [
+          `Hi ${firstName || name},`,
+          ``,
+          `Today's the day — see you at your trial class:`,
+          session,
+          ``,
+          bring,
+          ``,
+          `Where: ${addressLine}`,
+          ``,
+          `If something's come up, reply or call ${site.phone} and we'll rebook you.`,
+          ``,
+          `See you on the mats,`,
+          `True Virtues Jiu Jitsu`,
+        ].join("\n"),
+      });
+    }
+  }
+
   // 3) Add the booker as a contact in the "New Leads" Resend Audience (created
   //    automatically if needed) — a persistent list for broadcasts.
   const audienceId = await resolveAudienceId(apiKey);
@@ -266,6 +350,9 @@ export async function POST(request: Request) {
           first_name: firstName || name,
           full_name: name,
           class: session,
+          // Program key (gi/nogi/womens/juniors) so automations can branch or
+          // audiences can be partitioned by which class they booked.
+          program,
           phone: phone || "",
         },
       }),

@@ -79,6 +79,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
     const chosen = sessions.find((s) => s.value === data.session);
     const sessionLabel = chosen ? chosen.label : "Not sure yet — recommend one for me";
     const sessionAt = chosen ? chosen.value : "";
+    const program = chosen ? chosen.programId : "";
     setStatus("submitting");
     try {
       const res = await fetch("/api/trial", {
@@ -89,6 +90,7 @@ export default function TrialForm({ preselectProgram }: { preselectProgram?: str
           ...data,
           session: sessionLabel,
           sessionAt,
+          program,
           localTime: new Date().getTimezoneOffset(),
           ...tracking,
           form_page: typeof window !== "undefined" ? window.location.pathname : "",
