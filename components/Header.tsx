@@ -7,6 +7,7 @@ const navLinks = [
   { href: "#timetable", label: "Timetable" },
   { href: "#reviews", label: "Reviews" },
   { href: "#pricing", label: "Pricing" },
+  { href: "/shop", label: "Shop" },
   { href: "#faq", label: "FAQ" },
 ];
 

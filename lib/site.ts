@@ -38,6 +38,7 @@ export const sitePages = [
   { href: "/womens-jiu-jitsu-wimbledon", label: "Women's Jiu Jitsu" },
   { href: "/junior-jiu-jitsu", label: "Junior Jiu Jitsu" },
   { href: "/membership", label: "Membership" },
+  { href: "/shop", label: "Shop" },
   { href: "/seminars-and-events", label: "Seminars & Events" },
   { href: "/about-us", label: "About Us" },
   { href: "/faq", label: "FAQ" },
@@ -45,6 +46,58 @@ export const sitePages = [
   { href: "/legal", label: "Legal" },
   { href: "/ukbjja-policies", label: "UKBJJA Policies" },
 ] as const;
+
+// Shop catalogue. Ordering, payment and collection all happen in class — the
+// order form just tells the coaches what you want.
+export const shop = {
+  orderFormUrl:
+    "https://docs.google.com/forms/u/2/d/e/1FAIpQLScGlqmSwWsVcHVAFuBK3G-Z6myjO9St66XshXBEJNTskInQMw/viewform",
+  categories: [
+    {
+      name: "Uniform",
+      items: [
+        {
+          name: "TVJJ Team Gi",
+          price: "£60",
+          detail: "White or black. Kids and adult sizes — e.g. M0, A2, or A2L for a longer fit.",
+        },
+        { name: "TVJJ White Belt", price: "£15", detail: "Sizes A0–A5." },
+      ],
+    },
+    {
+      name: "No-Gi & training wear",
+      items: [
+        { name: "Short-sleeve rashguard", price: "£30", detail: "8 designs · XS–XXXL · men's, women's & kids." },
+        { name: "Long-sleeve rashguard", price: "£35", detail: "8 designs · XS–XXXL · men's, women's & kids." },
+        { name: "Grappling shorts", price: "£35", detail: "8 designs · XS–XXXL." },
+        { name: "Leggings", price: "£35", detail: "8 designs · XS–XXXL." },
+        { name: "Full no-gi set", price: "£95", detail: "Rashguard + shorts, short or long sleeve." },
+      ],
+    },
+    {
+      name: "Apparel",
+      items: [
+        { name: "T-shirt", price: "£20", detail: "Sizes XS–XXXL." },
+        { name: "Hoodie", price: "£35", detail: "£40 with a zip · XS–XXXL." },
+        { name: "Drawstring bag", price: "£15", detail: "" },
+      ],
+    },
+    {
+      name: "Patches",
+      items: [
+        { name: "Small round patch", price: "£5", detail: "Buy 1–3." },
+        { name: "Medium round patch", price: "£10", detail: "Buy 1–3." },
+        { name: "Large round / rectangle patch", price: "£10", detail: "Buy 1–3." },
+      ],
+    },
+  ],
+  designs: ["Plain Black", "White / Blue / Purple / Brown Belt", "Women's Team", "Kitsune", "Hanya"],
+  sizing: [
+    "Gis: kids (M sizes) and adult (A0–A5). Add an 'L' for a longer/taller fit, e.g. A2L.",
+    "Rashguards, shorts, leggings & tees: XS–XXXL, in men's, women's and kids' cuts.",
+    "Not sure on a size? Ask a coach at training — there are samples to try on.",
+  ],
+} as const;
 
 export const programs = [
   {
