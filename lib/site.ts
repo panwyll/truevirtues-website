@@ -153,6 +153,7 @@ export const pricing = {
       period: "/month",
       features: ["1 class per week", "Online curriculum access", "1 free month freeze per year"],
       featured: false,
+      joinUrl: "https://otsu.io/2ez",
     },
     {
       name: "Pro",
@@ -165,6 +166,7 @@ export const pricing = {
         "1 free month freeze per year",
       ],
       featured: true,
+      joinUrl: "https://otsu.io/2f0",
     },
     {
       name: "Elite",
@@ -177,12 +179,28 @@ export const pricing = {
         "1 free month freeze per year",
       ],
       featured: false,
+      joinUrl: "https://otsu.io/2f1",
     },
   ],
   specialist: [
-    { name: "Women's Jiu Jitsu", price: "£60/month", note: "1 women-only class weekly + gradings" },
-    { name: "Junior Jiu Jitsu", price: "£60/month", note: "1 class weekly + gradings" },
-    { name: "Pay-per-class", price: "£20/session", note: "No commitment at all" },
+    {
+      name: "Women's Jiu Jitsu",
+      price: "£60/month",
+      note: "1 women-only class weekly + gradings",
+      joinUrl: "https://otsu.io/2q8",
+    },
+    {
+      name: "Junior Jiu Jitsu",
+      price: "£60/month",
+      note: "1 class weekly + gradings",
+      joinUrl: "https://otsu.io/2pu",
+    },
+    {
+      name: "Pay-per-class",
+      price: "£20/session",
+      note: "No commitment at all",
+      joinUrl: "https://otsu.io/2f3",
+    },
   ],
 };
 

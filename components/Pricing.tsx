@@ -1,9 +1,8 @@
 import { pricing } from "@/lib/site";
 import PaidTrialButton from "./PaidTrialButton";
 
-// Martialytics sign-up page (One Touch Sign Up). When set, each membership
-// tier shows a "Join now" button so people can join directly.
-const SIGNUP_URL = process.env.NEXT_PUBLIC_MARTIALYTICS_SIGNUP_URL;
+// Each plan's "Join now" button links to its Martialytics One Touch Sign Up
+// page (joinUrl in lib/site.ts).
 
 export default function Pricing() {
   return (
@@ -69,34 +68,24 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              {SIGNUP_URL ? (
-                <div className="mt-6 flex flex-col gap-2">
-                  <a
-                    href={SIGNUP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-analytics={`pricing-${tier.name.toLowerCase()}-join`}
-                    className="rounded-lg bg-accent py-3 text-center font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
-                  >
-                    Join now
-                  </a>
-                  <a
-                    href="#free-trial"
-                    data-analytics={`pricing-${tier.name.toLowerCase()}-start`}
-                    className="text-center text-sm font-semibold text-stone-300 underline underline-offset-4 transition hover:text-white"
-                  >
-                    or try a free class first
-                  </a>
-                </div>
-              ) : (
+              <div className="mt-6 flex flex-col gap-2">
+                <a
+                  href={tier.joinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics={`pricing-${tier.name.toLowerCase()}-join`}
+                  className="rounded-lg bg-accent py-3 text-center font-bold uppercase tracking-wide text-white transition hover:bg-accent-strong"
+                >
+                  Join now
+                </a>
                 <a
                   href="#free-trial"
                   data-analytics={`pricing-${tier.name.toLowerCase()}-start`}
-                  className="mt-6 rounded-lg border border-white/20 py-3 text-center font-semibold text-white transition hover:border-accent hover:text-accent"
+                  className="text-center text-sm font-semibold text-stone-300 underline underline-offset-4 transition hover:text-white"
                 >
-                  Start with a free class
+                  or try a free class first
                 </a>
-              )}
+              </div>
             </div>
           ))}
         </div>
@@ -105,11 +94,20 @@ export default function Pricing() {
           {pricing.specialist.map((s) => (
             <div
               key={s.name}
-              className="rounded-xl border border-white/10 bg-panel px-6 py-5"
+              className="flex flex-col rounded-xl border border-white/10 bg-panel px-6 py-5"
             >
               <p className="font-semibold">{s.name}</p>
               <p className="mt-1 text-accent">{s.price}</p>
-              <p className="mt-1 text-sm text-stone-400">{s.note}</p>
+              <p className="mt-1 flex-1 text-sm text-stone-400">{s.note}</p>
+              <a
+                href={s.joinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics={`pricing-${s.name.toLowerCase().replace(/[^a-z]+/g, "-")}-join`}
+                className="mt-4 text-sm font-bold uppercase tracking-wide text-accent transition hover:text-accent-strong"
+              >
+                Join now →
+              </a>
             </div>
           ))}
         </div>
