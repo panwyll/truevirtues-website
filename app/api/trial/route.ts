@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import { site } from "@/lib/site";
 
 // Serverless signup handler. Every booking is forwarded to Martialytics as a
-// lead. With RESEND_API_KEY set it also emails a lead alert to the gym and an
-// instant confirmation to the customer, then adds the customer to a Resend
-// Audience so a Resend Automation (managed by the gym) handles the follow-up.
-// Without the Resend key it logs the lead so the form still works.
+// lead. With RESEND_API_KEY set it also emails a lead alert to the gym, an
+// instant confirmation to the customer, class reminders, and Mike's personal
+// follow-up (sociable-hours scheduled), and adds the customer to a Resend
+// Audience for broadcasts. Without the Resend key it logs the lead so the
+// form still works.
 
 const TO_EMAIL = process.env.LEAD_TO_EMAIL ?? "truevirtuesjiujitsu@gmail.com";
 const FROM_EMAIL = process.env.LEAD_FROM_EMAIL ?? "onboarding@resend.dev";
@@ -104,6 +105,88 @@ function londonAt(ref: Date, hour: number, minute: number): Date {
   const g = parts(new Date(guess));
   const offset = Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour, +g.minute, +g.second) - guess;
   return new Date(guess - offset);
+}
+
+// London wall-clock hour (0-23) for an instant.
+function londonHour(d: Date): number {
+  return +new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(d);
+}
+
+// Mike's personal follow-up only goes out between these London hours, so nobody
+// gets a chatty "just saw your signup" note at 3am.
+const FOLLOWUP_FROM_HOUR = 8;
+const FOLLOWUP_TO_HOUR = 21;
+
+// Nudge an instant into the next sociable window: before 8am → 8am today,
+// 9pm or later → 8am tomorrow, otherwise leave it as-is.
+function toSociableHours(t: Date): Date {
+  const h = londonHour(t);
+  if (h < FOLLOWUP_FROM_HOUR) return londonAt(t, FOLLOWUP_FROM_HOUR, 0);
+  if (h >= FOLLOWUP_TO_HOUR)
+    return londonAt(new Date(t.getTime() + 24 * 60 * 60 * 1000), FOLLOWUP_FROM_HOUR, 0);
+  return t;
+}
+
+// Mike's conversational, per-class follow-up — warm, brief, first-person, the
+// note a coach would actually send. Tone and kit advice vary by program.
+function mikeFollowUp(o: {
+  firstName: string;
+  program: string;
+  whenPhrase: string;
+  hasClass: boolean;
+}): { subject: string; text: string } {
+  const { firstName, program, whenPhrase, hasClass } = o;
+  const isJunior = program === "juniors";
+
+  const kit =
+    program === "gi"
+      ? `You'll need a gi for this one — if you haven't got one, just shout and I'll point you towards a good starter one. Otherwise comfy sportswear (no zips or buttons) and a bottle of water.`
+      : program === "juniors"
+        ? `They'll need a gi for this one — if you haven't got one yet just let me know and I'll point you towards a good starter one. Otherwise comfy sportswear (no zips or buttons) and a water bottle.`
+        : program === "nogi"
+          ? `No gi needed for this one — just a rashguard or a plain t-shirt, shorts or leggings (nothing with zips, buttons or pockets), and a bottle of water.`
+          : program === "womens"
+            ? `Just comfy sportswear (nothing with zips or buttons) and a bottle of water — that's all you need. You'll be paired with someone similar in size and experience, so there's nothing to feel nervous about.`
+            : `Just comfy sportswear (no zips or buttons) and a bottle of water — that's everything you need for a first class.`;
+
+  const opener = isJunior
+    ? hasClass
+      ? `Just saw the signup — looking forward to getting them on the mats ${whenPhrase}!`
+      : `Just saw the signup — I'll sort a class that suits and get them on the mats soon.`
+    : hasClass
+      ? `Just saw your signup — looking forward to catching you in class ${whenPhrase}!`
+      : `Just saw your signup — I'll sort you a class that fits and get you on the mats soon.`;
+
+  const early = isJunior
+    ? `If you can get here about 15 minutes early so I can say hi and get a quick form filled in, that'd be great.`
+    : `If you can get here about 15 minutes early so I can say hi, show you around and get a quick form filled in, that'd be great.`;
+
+  const subject = isJunior
+    ? `Looking forward to your little one's first class 🥋`
+    : hasClass
+      ? `Looking forward to your first class 🥋`
+      : `Let's get you on the mats 🥋`;
+
+  const text = [
+    `Hey ${firstName},`,
+    ``,
+    opener,
+    ``,
+    kit,
+    ``,
+    early,
+    ``,
+    `Any questions at all, just text me on ${site.phone}.`,
+    ``,
+    `Cheers,`,
+    `Mike`,
+  ].join("\n");
+
+  return { subject, text };
 }
 
 // Martialytics school ID for lead forwarding (public value from the leads
@@ -247,7 +330,7 @@ export async function POST(request: Request) {
       `Phone:   ${phone || "(not provided)"}`,
       `Class:   ${session}${classAt ? "" : " (no specific time selected)"}`,
       ``,
-      `A confirmation has been sent to them and they've been added to your Resend audience for follow-up. Reply here or call/text to confirm.`,
+      `They've had an instant confirmation, and Mike's personal follow-up is scheduled to land at a sociable time before the class. Reply here or call/text to confirm.`,
       ...(Object.keys(attribution).length
         ? [``, `— Where they came from —`, ...Object.entries(attribution).map(([k, v]) => `${k}: ${v}`)]
         : []),
@@ -373,36 +456,32 @@ export async function POST(request: Request) {
     }
   }
 
-  // 4) Fire a "trial.booked" event — this is what actually triggers the gym's
-  //    Resend Automation (Automations fire on custom events, not on a contact
-  //    being added). The payload variables are available in the automation's
-  //    email templates.
-  try {
-    const res = await fetch("https://api.resend.com/events/send", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "trial.booked",
-        email,
-        payload: {
-          first_name: firstName || name,
-          full_name: name,
-          class: session,
-          // Program key (gi/nogi/womens/juniors), weekday, and how soon the
-          // class is (today/tomorrow/later) — so automations can branch by
-          // plan type, day, and short-notice vs. later bookings.
-          program,
-          day: classDay,
-          class_when: classWhen,
-          // Ready-made phrase ("today"/"tomorrow"/"on Tuesday") for the copy.
-          when: whenPhrase,
-          phone: phone || "",
-        },
-      }),
+  // 4) Mike's personal follow-up — the conversational "just saw your signup"
+  //    note, sent from code (not a Resend automation) so we control timing.
+  //    Held to sociable London hours (8am–9pm) and always landed before the
+  //    class; skipped only if the class is so imminent that a prompt send would
+  //    already be too late (the confirmation has them covered either way).
+  const nowMs = Date.now();
+  let followUpAt: Date | null = toSociableHours(new Date(nowMs + 15 * 60 * 1000));
+  if (classAt && followUpAt.getTime() >= classAt.getTime()) {
+    const prompt = new Date(nowMs + 15 * 60 * 1000);
+    followUpAt = prompt.getTime() < classAt.getTime() ? prompt : null;
+  }
+  if (followUpAt) {
+    const fu = mikeFollowUp({
+      firstName: firstName || name,
+      program,
+      whenPhrase,
+      hasClass: !!classAt,
     });
-    if (!res.ok) console.error("Resend event error:", res.status, await res.text());
-  } catch (err) {
-    console.error("Resend event request failed:", err);
+    await sendEmail(apiKey, {
+      from: `Mike at True Virtues <${FROM_EMAIL}>`,
+      to: [email],
+      reply_to: TO_EMAIL,
+      scheduled_at: followUpAt.toISOString(),
+      subject: fu.subject,
+      text: fu.text,
+    });
   }
 
   if (!gymOk) {
